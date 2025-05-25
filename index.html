@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gmail Dot Trick Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4285f4;
+            --primary-dark: #3367d6;
+            --secondary: #ea4335;
+            --success: #0f9d58;
+            --success-dark: #0b8043;
+            --background: #f8f9fa;
+            --card: #ffffff;
+            --text: #202124;
+            --border-radius: 12px;
+            --shadow: 0 10px 30px rgba(0,0,0,0.12);
+            --transition: all 0.3s ease;
+        }
+        
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .page-wrapper {
+            width: 100%;
+            max-width: 950px;
+            padding: 30px 20px;
+            margin: 20px 0;
+        }
+        
+        .container {
+            background-color: var(--card);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            position: relative;
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.05);
+            transform: translateY(0);
+        }
+        
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        h1 {
+            color: var(--secondary);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            border-radius: 2px;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .input-group:hover {
+            transform: translateY(-2px);
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            font-size: 1rem;
+            color: #333;
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(66, 133, 244, 0.2);
+        }
+        
+        .count-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 8px;
+            opacity: 0.7;
+        }
+        
+        button {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .generate-btn {
+            background: linear-gradient(45deg, #4285f4, #34a853);
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #4285f4, #34a853, #fbbc05, #ea4335);
+            background-size: 400%;
+            z-index: -1;
+            transition: 0.5s;
+            animation: gradientAnimate 10s linear infinite;
+            opacity: 0;
+        }
+        
+        button:hover::before {
+            opacity: 1;
+        }
+        
+        @keyframes gradientAnimate {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        .result {
+            margin-top: 40px;
+            border-top: 1px solid #eaeaea;
+            padding-top: 30px;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result h3 {
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .result h3 i {
+            color: var(--primary);
+        }
+        
+        .search-container {
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .search-clear {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 0.9rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            display: none;
+            width: auto;
+            box-shadow: none;
+        }
+        
+        .search-clear:hover {
+            color: var(--secondary);
+            transform: translateY(-50%);
+            box-shadow: none;
+        }
+        
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            background-color: #f8f8f8;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .email-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid rgba(0,0,0,0.1);
+            padding: 15px;
+            background-color: #fafafa;
+            border-radius: 12px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .email-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .email-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .email-list::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        
+        .email-list::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+        
+        .email {
+            padding: 15px;
+            background-color: var(--card);
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+        
+        .email:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background-color: #f8f8f8;
+        }
+        
+        .email:last-child {
+            margin-bottom: 0;
+        }
+        
+        .email-text {
+            word-break: break-all;
+            font-size: 0.95rem;
+        }
+        
+        .copy-btn {
+            background-color: transparent;
+            color: var(--primary);
+            width: auto;
+            min-width: 80px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            box-shadow: none;
+        }
+        
+        .copy-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(0);
+        }
+        
+        .copy-all {
+            margin-top: 20px;
+            background: linear-gradient(45deg, #0f9d58, #137333);
+        }
+        
+        .info {
+            background-color: rgba(66, 133, 244, 0.08);
+            padding: 20px 25px;
+            border-left: 5px solid var(--primary);
+            margin: 30px 0;
+            border-radius: 0 12px 12px 0;
+            font-size: 0.95rem;
+            position: relative;
+            transition: var(--transition);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .info:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .info::before {
+            content: '\f05a';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: -15px;
+            top: -15px;
+            background: var(--primary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .status {
+            font-size: 0.9rem;
+            margin-top: 10px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .loader {
+            display: none;
+            margin: 20px auto;
+            text-align: center;
+        }
+        
+        .loader div {
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 3px;
+            animation: bounce 1.5s infinite ease-in-out both;
+        }
+        
+        .loader div:nth-child(1) {
+            animation-delay: -0.3s;
+        }
+        
+        .loader div:nth-child(2) {
+            animation-delay: -0.15s;
+        }
+        
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 20px 15px;
+            }
+            
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        .notification {
+            /* Notification styles remain here */
+        }
+        
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            padding: 15px 0;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            color: #666;
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .footer a:hover {
+            color: var(--secondary);
+        }
+        
+        .footer .telegram-icon {
+            color: #0088cc;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="container">
+            <h1>Gmail Dot Trick Generator</h1>
+            
+            <div class="info">
+                <p>The "dot trick" works because Gmail ignores dots in email addresses. For example, <strong>john.doe@gmail.com</strong> and <strong>johndoe@gmail.com</strong> are treated as the same email by Gmail's servers, but many websites recognize them as different emails.</p>
+            </div>
+
+            <div class="input-group">
+                <label for="email"><i class="fas fa-envelope"></i> Enter your Gmail address (without @gmail.com):</label>
+                <input type="text" id="email" placeholder="e.g. johndoe" autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <label for="count"><i class="fas fa-list-ol"></i> Number of variations to generate (max 1024):</label>
+                <input type="number" id="count" min="1" max="1024" value="20">
+                <div class="count-info">
+                    <span>Min: 1</span>
+                    <span>Max: 1024</span>
+                </div>
+            </div>
+
+            <button class="generate-btn" onclick="generateEmails()">
+                <i class="fas fa-magic"></i>
+                Generate Email Variations
+            </button>
+            
+            <div class="loader" id="loader">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+
+            <div class="result" id="result" style="display: none;">
+                <h3><i class="fas fa-check-circle"></i> Generated Email Variations</h3>
+                
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" id="searchBox" placeholder="Search through generated emails...">
+                    <button class="search-clear" id="clearSearch">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="no-results" id="noResults">
+                    <i class="fas fa-search"></i> No matching email addresses found
+                </div>
+                
+                <div class="email-list" id="emailList"></div>
+                <div class="status" id="status"></div>
+                <button class="copy-all" onclick="copyAllEmails()">
+                    <i class="fas fa-copy"></i>
+                    Copy All Emails
+                </button>
+            </div>
+            
+            <div class="footer">
+                <div>Copyright By Arsilents</div>
+                <a href="https://t.me/arsilents" target="_blank">
+                    <i class="fab fa-telegram telegram-icon"></i>
+                    https://t.me/arsilents
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateEmails() {
+            const emailInput = document.getElementById('email').value.trim().toLowerCase();
+            const count = parseInt(document.getElementById('count').value);
+            const loader = document.getElementById('loader');
+            const result = document.getElementById('result');
+            const status = document.getElementById('status');
+            
+            if (!emailInput) {
+                showNotification('Please enter a valid Gmail username');
+                return;
+            }
+            
+            if (emailInput.includes('@')) {
+                showNotification('Please enter only the part before @gmail.com');
+                return;
+            }
+            
+            if (count < 1 || count > 1024) {
+                showNotification('Please enter a number between 1 and 1024');
+                return;
+            }
+
+            // Show loader, hide result
+            loader.style.display = 'block';
+            result.style.display = 'none';
+            
+            // Use setTimeout to allow the UI to update before starting the computation
+            setTimeout(() => {
+                // Remove any existing dots from the input
+                const cleanEmail = emailInput.replace(/\./g, '');
+                const length = cleanEmail.length;
+                
+                if (length <= 1) {
+                    loader.style.display = 'none';
+                    showNotification('Email username must be at least 2 characters long for dot variations');
+                    return;
+                }
+                
+                // Generate variations
+                const variations = new Set();
+                variations.add(cleanEmail + '@gmail.com'); // Original email
+                
+                // Calculate maximum possible variations
+                const maxPossibleVariations = Math.pow(2, length - 1);
+                const targetCount = Math.min(count, maxPossibleVariations);
+                
+                // For systematic generation when random approach doesn't work well
+                if (targetCount > maxPossibleVariations / 2 || length <= 5) {
+                    // Generate all possible combinations systematically
+                    generateAllCombinations(cleanEmail, variations, targetCount);
+                } else {
+                    // Use random approach for fewer variations or longer emails
+                    generateRandomVariations(cleanEmail, variations, targetCount);
+                }
+                
+                // Convert set to array
+                const variationsArray = Array.from(variations);
+                
+                // Hide loader
+                loader.style.display = 'none';
+                
+                // Update status
+                status.innerHTML = `<i class="fas fa-info-circle"></i> Generated ${variationsArray.length} unique email variations`;
+                
+                // Display results
+                displayResults(variationsArray);
+            }, 100);
+        }
+        
+        // Generate all possible dot combinations systematically
+        function generateAllCombinations(email, variations, targetCount) {
+            const length = email.length;
+            
+            // Generate binary patterns representing dot positions
+            for (let i = 0; i < Math.pow(2, length - 1) && variations.size < targetCount; i++) {
+                let binary = i.toString(2).padStart(length - 1, '0');
+                let result = email[0];
+                
+                for (let j = 1; j < length; j++) {
+                    if (binary[j - 1] === '1') {
+                        result += '.';
+                    }
+                    result += email[j];
+                }
+                
+                variations.add(result + '@gmail.com');
+            }
+        }
+        
+        // Generate random variations more efficiently
+        function generateRandomVariations(email, variations, targetCount) {
+            const length = email.length;
+            let attempts = 0;
+            const maxAttempts = targetCount * 10; // Limit attempts to avoid infinite loops
+            
+            while (variations.size < targetCount && attempts < maxAttempts) {
+                attempts++;
+                
+                // For very small usernames, we need a more directed approach
+                if (length <= 3) {
+                    // Just place a dot between each character systematically
+                    let positions = [];
+                    for (let i = 1; i < length; i++) {
+                        positions.push(i);
+                    }
+                    
+                    let newEmail = email[0];
+                    for (let i = 1; i < length; i++) {
+                        if (Math.random() < 0.5) {
+                            newEmail += '.';
+                        }
+                        newEmail += email[i];
+                    }
+                    
+                    variations.add(newEmail + '@gmail.com');
+                    continue;
+                }
+                
+                // Generate a more random pattern for longer names
+                let newEmail = email[0];
+                let addedDot = false;
+                
+                for (let i = 1; i < length; i++) {
+                    // Adjust probability based on how many variations we still need
+                    // and how many characters we have left
+                    const remainingNeeded = targetCount - variations.size;
+                    const remainingPositions = length - i;
+                    
+                    // Increase probability of adding dots as we need more variations
+                    let probability = remainingNeeded / (targetCount * 2);
+                    
+                    if (remainingPositions <= 2 && !addedDot) {
+                        probability = 0.9; // Force dots if we're running out of positions
+                    }
+                    
+                    if (Math.random() < probability) {
+                        newEmail += '.';
+                        addedDot = true;
+                    }
+                    newEmail += email[i];
+                }
+                
+                variations.add(newEmail + '@gmail.com');
+            }
+            
+            // If we still don't have enough variations, use the systematic approach
+            if (variations.size < targetCount) {
+                generateAllCombinations(email, variations, targetCount);
+            }
+        }
+
+        function displayResults(emails) {
+            const resultDiv = document.getElementById('result');
+            const emailList = document.getElementById('emailList');
+            const searchBox = document.getElementById('searchBox');
+            const clearSearch = document.getElementById('clearSearch');
+            const noResults = document.getElementById('noResults');
+            
+            emailList.innerHTML = '';
+            
+            // Store all emails for filtering
+            window.allEmails = emails;
+            
+            // Create email elements
+            createEmailElements(emails);
+            
+            resultDiv.style.display = 'block';
+            
+            // Set up search functionality
+            searchBox.value = '';
+            searchBox.addEventListener('input', filterEmails);
+            
+            // Set up clear button
+            clearSearch.addEventListener('click', function() {
+                searchBox.value = '';
+                filterEmails();
+                this.style.display = 'none';
+            });
+            
+            // Scroll to results
+            setTimeout(() => {
+                resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+        
+        function createEmailElements(emails) {
+            const emailList = document.getElementById('emailList');
+            emailList.innerHTML = '';
+            
+            emails.forEach((email, index) => {
+                const emailDiv = document.createElement('div');
+                emailDiv.className = 'email';
+                emailDiv.setAttribute('data-email', email);
+                
+                const emailSpan = document.createElement('span');
+                emailSpan.className = 'email-text';
+                emailSpan.textContent = `${index + 1}. ${email}`;
+                
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-btn';
+                copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                copyBtn.onclick = function() { copyEmail(email, this); };
+                
+                emailDiv.appendChild(emailSpan);
+                emailDiv.appendChild(copyBtn);
+                emailList.appendChild(emailDiv);
+            });
+        }
+        
+        function filterEmails() {
+            const searchBox = document.getElementById('searchBox');
+            const clearSearch = document.getElementById('clearSearch');
+            const noResults = document.getElementById('noResults');
+            const query = searchBox.value.toLowerCase().trim();
+            
+            // Show/hide clear button
+            clearSearch.style.display = query ? 'block' : 'none';
+            
+            if (!window.allEmails) return;
+            
+            if (query === '') {
+                // Show all emails if search is empty
+                createEmailElements(window.allEmails);
+                noResults.style.display = 'none';
+                return;
+            }
+            
+            // Filter emails
+            const filteredEmails = window.allEmails.filter(email => 
+                email.toLowerCase().includes(query)
+            );
+            
+            // Show filtered results
+            if (filteredEmails.length === 0) {
+                document.getElementById('emailList').innerHTML = '';
+                noResults.style.display = 'block';
+            } else {
+                createEmailElements(filteredEmails);
+                noResults.style.display = 'none';
+            }
+        }
+
+        function copyEmail(email, button) {
+            navigator.clipboard.writeText(email).then(() => {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                button.style.backgroundColor = 'var(--success)';
+                button.style.color = 'white';
+                button.style.borderColor = 'var(--success)';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.style.backgroundColor = '';
+                    button.style.color = '';
+                    button.style.borderColor = '';
+                }, 2000);
+            });
+        }
+
+        function copyAllEmails() {
+            const emails = Array.from(document.querySelectorAll('.email'))
+                .map(div => div.getAttribute('data-email'))
+                .join('\n');
+            
+            navigator.clipboard.writeText(emails).then(() => {
+                showNotification('All emails copied to clipboard!', 'success');
+            });
+        }
+        
+        function showNotification(message, type = 'error') {
+            const notification = document.createElement('div');
+            notification.className = 'notification ' + type;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                ${message}
+            `;
+            
+            // Style the notification
+            Object.assign(notification.style, {
+                position: 'fixed',
+                top: '20px',
+                right: '20px',
+                padding: '15px 20px',
+                background: type === 'success' ? 'var(--success)' : 'var(--secondary)',
+                color: 'white',
+                borderRadius: '10px',
+                boxShadow: '0 5px 15px rgba(0,0,0,0.2)',
+                zIndex: '1000',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                transform: 'translateX(120%)',
+                transition: 'transform 0.3s ease'
+            });
+            
+            document.body.appendChild(notification);
+            
+            // Trigger animation
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 10);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(120%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html> 
